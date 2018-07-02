@@ -5,7 +5,7 @@ bit_length = 4
 max = 2**bit_length
 key = Random.new.rand(2**(key_length - 1)..2**key_length)
 
-cipher = MyCipher.new(bit_length, key, key, key_length)
+cipher = MyCipher.new(bit_length, key, key, key * Random.new.rand(2**(key_length - 1)..2**key_length))
 c = 0
 #max.times do |i|
   #max.times do |j|
