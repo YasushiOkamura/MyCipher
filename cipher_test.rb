@@ -1,11 +1,11 @@
 require './my_cipher.rb'
 
 bit_length = 8
-roop_num = 4
+roop_num = 100
 random = Random.new
 
 roop_num.times do |i|  
-  key = 193# random.rand(2..127)
+  key = random.rand(9_223_372_036_854_775_807..18_446_744_073_709_551_615)
   roop_num.times do |j|
     cipher = MyCipher.new(bit_length, key, key)
     a = random.rand(256)
@@ -22,13 +22,16 @@ roop_num.times do |i|
     m4 = cipher.decrypt(c4)
     m5 = cipher.decrypt(c5)
     m6 = cipher.decrypt(c6)
+=begin    
     puts "#{m1} == #{m2}, m1:#{m1} m2:#{m2}  m1&m2:#{m5}, m1&m2:#{m1 & m2}, key: #{key}" if m3 == 1
+    puts "#{m1} != #{m2}, m1:#{m1} m2:#{m2}  m1&m2:#{m5}, m1&m2:#{m1 & m2}, key: #{key}" if m3 == 0
     if(m5 != m1 & m2)
       puts "m1:#{m1} m2:#{m2}  m1&m2:#{m5}, m1&m2:#{m1 & m2}, key: #{key}"
     end
     if(m6 != m1 ^ m2)
       puts "m1:#{m1} m2:#{m2}  m1|m2:#{m6}, m1&m2:#{m1 ^ m2}, key: #{key}"
     end
+=end
     #puts "#{m1} != #{m2}, m1:#{m1} m2:#{m2}  m1&m2:#{m5}, m1&m2:#{m1 & m2}, key: #{key}" if m3 == 0
     #puts "#{m1} == #{m2}, m1:#{m1} m2:#{m2}  m1&m2:#{m5}, m1&m2:#{m1 & m2}, key: #{key}" if m3 == 1
     #puts ""
@@ -38,7 +41,7 @@ roop_num.times do |i|
       puts "invalid decrypt  values m1:#{m1}, a:#{a}, m2:#{m2}, b:#{b}, key:#{key}"
     end
 =end
-=begin
+#=begin
     if(m3.zero? && (m1 == m2))
       puts "#{m1} != #{m2}, m1:#{m1} m2:#{m2} \t ~m1:#{m4}, m1&m2:#{m5}, m1^m2:#{m6}, key: #{key}" if m3 == 0
     elsif(m3 == 1 && (m1 != m2))
@@ -46,7 +49,7 @@ roop_num.times do |i|
     else
       #puts "put true  values m1:#{m1}, m2:#{m2}, key:#{key}"
     end
-=end
+#=end
   end
 end
 

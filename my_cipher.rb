@@ -1,10 +1,11 @@
 class MyCipher
   attr_accessor :private_key, :public_key
-  def initialize(bit_length, private_key, public_key)
+  def initialize(bit_length, private_key, public_key, key_dash)
     @bit_length = bit_length
     @private_key = private_key
     @public_key = public_key
-    @rand_max = 1000
+    @rand_max = 100
+    @key_dash = key_dash
   end
 
   # 暗号化してreturn
@@ -56,6 +57,45 @@ class MyCipher
     c_one = encrypt(1)
     a3.map{ |a| c_one = c_and([a], c_one) }
     c_one
+  end
+
+  def c_or(c1, c2)
+    c_xor(c_xor(c1, c2), c_and(c1, c2))
+  end
+
+  def c_add(c1, c2)
+    c1, c2 = size_unification(c1, c2)
+    # 全加算器をつなげる
+    x = bit_encrypt(0)
+    c3 = [] # = Array.new(c1.length)
+    (c1.length - 1).downto(0) do |i|
+      #print "FA(#{decrypt([c1[i]])}, #{decrypt([c2[i]])}, #{decrypt([x])})"
+      x, c3[i] = c_full_add(c1[i], c2[i], x)
+      # puts "= #{decrypt([x])} #{decrypt([c3[i]])}"
+    end
+    [x] + c3
+  end
+
+  def c_mul(c1, c2)
+  end
+
+  # 1ビット全加算器
+  def c_full_add(a, b, x)
+    c1, s1 = c_half_add(a, b)
+    c2, s2 = c_half_add(s1, x)
+    c3 = c_bit_or(c1, c2)
+    # puts "#{decrypt([c1])} or #{decrypt([c2])} = #{decrypt([c3])}"
+    return c3, s2
+  end
+
+  # 1ビット半加算器
+  def c_half_add(a, b)
+    return a * b, a + b
+  end
+  
+  # 1ビットor
+  def c_bit_or(c1, c2)
+    (c1 * c2) + (c1 + c2)
   end
 
   private
