@@ -1,7 +1,7 @@
 require './my_cipher.rb'
 
-key_length = 128
-bit_length = 4
+key_length = 512
+bit_length = 16
 max = 2**bit_length
 key = Random.new.rand(2**(key_length - 1)..2**key_length)
 
@@ -9,10 +9,10 @@ cipher = MyCipher.new(bit_length, key, key, key * Random.new.rand(2**(key_length
 c = 0
 #max.times do |i|
   #max.times do |j|
-  15.times do |depth|
+  30.times do |depth|
     start_time = Time.now
-    i = 5
-    j = 3
+    i = 200
+    j = 150
     c1 = []
     c2 = []
     c3 = cipher.encrypt(0)

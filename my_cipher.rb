@@ -1,5 +1,5 @@
 class MyCipher
-  attr_accessor :private_key, :public_key
+  attr_accessor :private_key, :public_key, :key_dash
   def initialize(bit_length, private_key, public_key, key_dash)
     @bit_length = bit_length
     @private_key = private_key
@@ -24,6 +24,10 @@ class MyCipher
 
   def bit_encrypt(num)
     num + rk
+  end
+
+  def c_reflesh(c)
+    c.map{ |n| n = n % @key_dash }
   end
 
   def c_xor(c1, c2)
@@ -69,11 +73,9 @@ class MyCipher
     x = bit_encrypt(0)
     c3 = [] # = Array.new(c1.length)
     (c1.length - 1).downto(0) do |i|
-      #print "FA(#{decrypt([c1[i]])}, #{decrypt([c2[i]])}, #{decrypt([x])})"
       x, c3[i] = c_full_add(c1[i], c2[i], x)
-      # puts "= #{decrypt([x])} #{decrypt([c3[i]])}"
     end
-    [x] + c3
+    c_reflesh([x] + c3)
   end
 
   def c_mul(c1, c2)
